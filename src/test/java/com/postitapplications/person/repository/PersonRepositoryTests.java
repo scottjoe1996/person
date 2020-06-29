@@ -99,11 +99,9 @@ public class PersonRepositoryTests {
 
     @Test
     public void saveShouldAddAPersonToThePersonDatabase() {
-        mongoTemplate.dropCollection(Person.class);
-
         personRepository.save(new Person(null, "Jeff Smith"));
 
-        assertThat(mongoTemplate.findAll(Person.class).size()).isEqualTo(1);
+        assertThat(mongoTemplate.findAll(Person.class).size()).isEqualTo(2);
 
     }
 
@@ -136,9 +134,7 @@ public class PersonRepositoryTests {
     }
 
     @Test
-    public void saveShouldThrowExceptionWhenUsingIdOfNull() {
-        mongoTemplate.dropCollection(Person.class);
-
+    public void saveShouldThrowExceptionWhenUsingNullId() {
         Exception exception = assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             personRepository.save(null, new Person(null, "Jeff Smith"));
         });

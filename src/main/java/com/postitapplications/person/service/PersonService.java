@@ -4,6 +4,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.postitapplications.person.document.Person;
 import com.postitapplications.person.repository.PersonRepo;
+import com.postitapplications.person.utilities.PersonValidator;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class PersonService {
     }
 
     public Person savePerson(Person person) {
+        PersonValidator.validatePerson(person);
         return personRepo.save(person);
     }
 
