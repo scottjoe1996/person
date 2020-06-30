@@ -8,16 +8,15 @@ import com.postitapplications.person.document.Person;
 import com.postitapplications.person.exceptions.NullOrEmptyException;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class PersonValidatorTests {
+public class DocumentValidatorTests {
 
     @Test
     public void validatePersonShouldThrowNullPointerExceptionWhenPersonIsNull() {
         Exception exception = assertThrows(NullPointerException.class, () -> {
-            PersonValidator.validatePerson(null);
+            DocumentValidator.validatePerson(null);
         });
 
         assertThat(exception.getMessage()).isEqualTo("Person cannot be null");
@@ -26,7 +25,7 @@ public class PersonValidatorTests {
     @Test
     public void validatePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsNull() {
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            PersonValidator.validatePerson(new Person(UUID.randomUUID(), null));
+            DocumentValidator.validatePerson(new Person(UUID.randomUUID(), null));
         });
 
         assertThat(exception.getMessage()).isEqualTo("Person's name cannot be null or empty");
@@ -35,7 +34,7 @@ public class PersonValidatorTests {
     @Test
     public void validatePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsEmpty() {
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            PersonValidator.validatePerson(new Person(UUID.randomUUID(), ""));
+            DocumentValidator.validatePerson(new Person(UUID.randomUUID(), ""));
         });
 
         assertThat(exception.getMessage()).isEqualTo("Person's name cannot be null or empty");
@@ -43,8 +42,22 @@ public class PersonValidatorTests {
 
     @Test
     public void validatePersonShouldNotThrowAnExceptionWithValidPerson() {
-        assertDoesNotThrow(() -> PersonValidator.validatePerson(new Person(UUID.randomUUID(),
+        assertDoesNotThrow(() -> DocumentValidator.validatePerson(new Person(UUID.randomUUID(),
             "John Smith")));
+    }
+
+    @Test
+    public void validateIdShouldThrowNullPointerExceptionWhenIdIsNull() {
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            DocumentValidator.validateId(null);
+        });
+
+        assertThat(exception.getMessage()).isEqualTo("Id cannot be null");
+    }
+
+    @Test
+    public void validateIdShouldNotThrowAnExceptionWithValidId() {
+        assertDoesNotThrow(() -> DocumentValidator.validateId(UUID.randomUUID()));
     }
 
 }

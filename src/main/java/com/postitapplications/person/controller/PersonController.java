@@ -51,4 +51,5 @@ public class PersonController {
     public DeleteResult deletePersonById(@PathVariable("id") UUID id) {
         return personService.deletePersonById(id);
     }
+
 }

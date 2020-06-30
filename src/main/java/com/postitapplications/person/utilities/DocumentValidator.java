@@ -2,8 +2,9 @@ package com.postitapplications.person.utilities;
 
 import com.postitapplications.person.document.Person;
 import com.postitapplications.person.exceptions.NullOrEmptyException;
+import java.util.UUID;
 
-public class PersonValidator {
+public class DocumentValidator {
 
     public static void validatePerson(Person person) {
         if(person == null) {
@@ -12,6 +13,12 @@ public class PersonValidator {
 
         if(person.getName() == null || person.getName().isEmpty()) {
             throw new NullOrEmptyException("Person's name cannot be null or empty");
+        }
+    }
+
+    public static void validateId(UUID id) {
+        if(id == null) {
+            throw new NullPointerException("Id cannot be null");
         }
     }
 

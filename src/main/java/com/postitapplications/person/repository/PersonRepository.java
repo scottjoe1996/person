@@ -51,4 +51,5 @@ public class PersonRepository implements PersonRepo {
     public DeleteResult removeById(UUID id) {
         return mongoTemplate.remove(new Query(Criteria.where("id").is(id)), Person.class);
     }
+
 }
