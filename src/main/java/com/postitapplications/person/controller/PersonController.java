@@ -6,7 +6,10 @@ import com.postitapplications.person.document.Person;
 import com.postitapplications.person.service.PersonService;
 import java.util.List;
 import java.util.UUID;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +31,9 @@ public class PersonController {
     }
 
     @PostMapping
-    public Person savePerson(@RequestBody Person person) {
-        return personService.savePerson(person);
+    public ResponseEntity<Person> savePerson(@RequestBody Person person) {
+        Person savedPerson = personService.savePerson(person);
+        return new ResponseEntity<>(savedPerson, HttpStatus.CREATED);
     }
 
     @GetMapping

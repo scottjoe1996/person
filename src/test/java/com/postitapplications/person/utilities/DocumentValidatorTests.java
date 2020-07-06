@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.postitapplications.person.document.Person;
-import com.postitapplications.person.exceptions.NullOrEmptyException;
+import com.postitapplications.person.exception.NullOrEmptyException;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

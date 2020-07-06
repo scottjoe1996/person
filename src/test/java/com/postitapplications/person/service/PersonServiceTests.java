@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.postitapplications.person.document.Person;
-import com.postitapplications.person.exceptions.NullOrEmptyException;
+import com.postitapplications.person.exception.NullOrEmptyException;
 import com.postitapplications.person.repository.PersonRepository;
 import java.util.ArrayList;
 import java.util.List;
