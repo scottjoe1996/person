@@ -6,7 +6,4 @@ public class NullOrEmptyException extends RuntimeException {
         super(errorMessage);
     }
 
-    public NullOrEmptyException(String errorMessage, Throwable cause) {
-        super(errorMessage, cause);
-    }
 }

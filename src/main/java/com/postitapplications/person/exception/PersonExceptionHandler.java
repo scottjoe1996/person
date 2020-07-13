@@ -12,13 +12,28 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class PersonExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NullOrEmptyException.class)
-    public ResponseEntity<Object> handleCityNotFoundException(NullOrEmptyException exception) {
+    @ExceptionHandler(value = { NullOrEmptyException.class, NullPointerException.class })
+    public ResponseEntity<Object> handleBadRequestException(Exception exception) {
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", exception.getMessage());
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        body.put("error", badRequest);
+        body.put("message", exception.getMessage());
+        body.put("timestamp", LocalDateTime.now());
+
+        return new ResponseEntity<>(body, badRequest);
+    }
+
+    @ExceptionHandler(value = { PersonNotFoundException.class })
+    public ResponseEntity<Object> handlePersonNotFoundException(PersonNotFoundException exception) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        HttpStatus notFound = HttpStatus.NOT_FOUND;
+
+        body.put("error", notFound);
+        body.put("message", exception.getMessage());
+        body.put("timestamp", LocalDateTime.now());
+
+        return new ResponseEntity<>(body, notFound);
     }
 
 }

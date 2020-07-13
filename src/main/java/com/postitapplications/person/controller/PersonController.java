@@ -3,10 +3,10 @@ package com.postitapplications.person.controller;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.postitapplications.person.document.Person;
+import com.postitapplications.person.exception.PersonNotFoundException;
 import com.postitapplications.person.service.PersonService;
 import java.util.List;
 import java.util.UUID;
-import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,17 +43,41 @@ public class PersonController {
 
     @GetMapping("{id}")
     public Person getPersonById(@PathVariable("id") UUID id) {
-        return personService.getPersonById(id);
+        Person foundPerson = personService.getPersonById(id);
+
+        if (foundPerson == null) {
+            throw new PersonNotFoundException(
+                String.format("Person with id: %s was not found", id)
+            );
+        }
+
+        return foundPerson;
     }
 
     @PutMapping
-    public UpdateResult updatePerson(@RequestBody Person person) {
-        return personService.updatePerson(person);
+    public ResponseEntity<Person> updatePerson(@RequestBody Person person) {
+        UpdateResult updateResult = personService.updatePerson(person);
+
+        if (updateResult.getMatchedCount() == 0) {
+            throw new PersonNotFoundException(
+                String.format("Person with id: %s was not found", person.getId())
+            );
+        }
+
+        return new ResponseEntity<>(person, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public DeleteResult deletePersonById(@PathVariable("id") UUID id) {
-        return personService.deletePersonById(id);
+    public ResponseEntity<UUID> deletePersonById(@PathVariable("id") UUID id) {
+        DeleteResult deleteResult = personService.deletePersonById(id);
+
+        if (deleteResult.getDeletedCount() == 0) {
+            throw new PersonNotFoundException(
+                String.format("Person with id: %s was not found", id)
+            );
+        }
+
+        return  new ResponseEntity<>(id, HttpStatus.OK);
     }
 
 }
