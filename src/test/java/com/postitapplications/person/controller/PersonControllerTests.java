@@ -57,6 +57,7 @@ public class PersonControllerTests {
     @Test
     public void getPersonByIdShouldReturnExpectedErrorMessageWhenPersonIsNotFound() throws Exception {
         UUID nonExistingPersonId = UUID.randomUUID();
+
         when(personRepository.findById(nonExistingPersonId)).thenReturn(null);
 
         mockMvc.perform(get("/person/" + nonExistingPersonId)
@@ -72,6 +73,7 @@ public class PersonControllerTests {
     public void updatePersonShouldReturnExpectedErrorMessageWhenPersonIsNotFound() throws Exception {
         UpdateResult updateResult = Mockito.mock(UpdateResult.class);
         Person personToUpdate = new Person(UUID.randomUUID(), "John Smith");
+
         when(updateResult.getMatchedCount()).thenReturn((long) 0);
         when(personRepository.update(Mockito.any())).thenReturn(updateResult);
 
@@ -86,9 +88,36 @@ public class PersonControllerTests {
     }
 
     @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidFields() throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), null);
+
+        mockMvc.perform(put("/person")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(personToUpdate))
+            .accept(MediaType.APPLICATION_JSON))
+               .andDo(print())
+               .andExpect(status().isBadRequest())
+               .andExpect(content().string(containsString("Person's name cannot be null or empty")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidId() throws Exception {
+        Person personToUpdate = new Person(null, "John Smith");
+
+        mockMvc.perform(put("/person")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(personToUpdate))
+            .accept(MediaType.APPLICATION_JSON))
+               .andDo(print())
+               .andExpect(status().isBadRequest())
+               .andExpect(content().string(containsString("Id cannot be null")));
+    }
+
+    @Test
     public void deletePersonByIdShouldReturnExpectedErrorMessageWhenPersonIsNotFound() throws Exception {
         DeleteResult deleteResult = Mockito.mock(DeleteResult.class);
         UUID nonExistingPersonId = UUID.randomUUID();
+
         when(deleteResult.getDeletedCount()).thenReturn((long) 0);
         when(personRepository.removeById(nonExistingPersonId)).thenReturn(deleteResult);
 
