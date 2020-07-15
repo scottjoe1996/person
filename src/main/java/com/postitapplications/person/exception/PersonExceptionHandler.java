@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class PersonExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = { NullOrEmptyException.class, NullPointerException.class })
+    @ExceptionHandler(value = {NullOrEmptyException.class, NullPointerException.class})
     public ResponseEntity<Object> handleBadRequestException(Exception exception) {
         Map<String, Object> body = new LinkedHashMap<>();
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
@@ -24,7 +24,7 @@ public class PersonExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, badRequest);
     }
 
-    @ExceptionHandler(value = { PersonNotFoundException.class })
+    @ExceptionHandler(value = {PersonNotFoundException.class})
     public ResponseEntity<Object> handlePersonNotFoundException(PersonNotFoundException exception) {
         Map<String, Object> body = new LinkedHashMap<>();
         HttpStatus notFound = HttpStatus.NOT_FOUND;
@@ -35,5 +35,4 @@ public class PersonExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, notFound);
     }
-
 }

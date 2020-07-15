@@ -7,13 +7,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.postitapplications.person.document.Person;
+import com.postitapplications.person.document.Person.Gender;
 import com.postitapplications.person.repository.PersonRepository;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,92 +43,86 @@ public class PersonControllerTests {
     }
 
     @Test
-    public void savePersonShouldReturnExpectedErrorMessageWhenSavingWithInvalidFields() throws Exception {
-        Person personToSave = new Person(null, null);
+    public void savePersonShouldReturnExpectedErrorMessageWhenSavingWithInvalidFields()
+        throws Exception {
+        Person personToSave = new Person(null, null, 1, 1, "10/10/2000", Gender.MALE);
 
-        mockMvc.perform(post("/person")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(personToSave))
-            .accept(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpect(status().isBadRequest())
-               .andExpect(content().string(containsString("Person's name cannot be null or empty")));
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(
+            content().string(containsString("Person's name cannot be null or empty")));
     }
 
     @Test
-    public void getPersonByIdShouldReturnExpectedErrorMessageWhenPersonIsNotFound() throws Exception {
+    public void getPersonByIdShouldReturnExpectedErrorMessageWhenPersonIsNotFound()
+        throws Exception {
         UUID nonExistingPersonId = UUID.randomUUID();
 
         when(personRepository.findById(nonExistingPersonId)).thenReturn(null);
 
-        mockMvc.perform(get("/person/" + nonExistingPersonId)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpect(status().isNotFound())
-               .andExpect(content().string(containsString("Person with id: "
-                   + nonExistingPersonId + " was not found")));
+        mockMvc.perform(
+            get("/person/" + nonExistingPersonId).contentType(MediaType.APPLICATION_JSON)
+                                                 .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isNotFound()).andExpect(content()
+            .string(containsString("Person with id: " + nonExistingPersonId + " was not found")));
     }
 
     @Test
-    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonIsNotFound() throws Exception {
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonIsNotFound()
+        throws Exception {
         UpdateResult updateResult = Mockito.mock(UpdateResult.class);
-        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith");
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000",
+            Gender.MALE);
 
         when(updateResult.getMatchedCount()).thenReturn((long) 0);
         when(personRepository.update(Mockito.any())).thenReturn(updateResult);
 
-        mockMvc.perform(put("/person")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(personToUpdate))
-            .accept(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpect(status().isNotFound())
-               .andExpect(content().string(containsString("Person with id: "
-                   + personToUpdate.getId() + " was not found")));
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isNotFound()).andExpect(content().string(
+            containsString("Person with id: " + personToUpdate.getId() + " was not found")));
     }
 
     @Test
-    public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidFields() throws Exception {
-        Person personToUpdate = new Person(UUID.randomUUID(), null);
+    public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidFields()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), null, 1, 1, "10/10/2000",
+            Gender.MALE);
 
-        mockMvc.perform(put("/person")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(personToUpdate))
-            .accept(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpect(status().isBadRequest())
-               .andExpect(content().string(containsString("Person's name cannot be null or empty")));
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(
+            content().string(containsString("Person's name cannot be null or empty")));
     }
 
     @Test
-    public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidId() throws Exception {
-        Person personToUpdate = new Person(null, "John Smith");
+    public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidId()
+        throws Exception {
+        Person personToUpdate = new Person(null, "John Smith", 1, 1, "10/10/2000", Gender.MALE);
 
-        mockMvc.perform(put("/person")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(personToUpdate))
-            .accept(MediaType.APPLICATION_JSON))
-               .andDo(print())
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
                .andExpect(status().isBadRequest())
                .andExpect(content().string(containsString("Id cannot be null")));
     }
 
     @Test
-    public void deletePersonByIdShouldReturnExpectedErrorMessageWhenPersonIsNotFound() throws Exception {
+    public void deletePersonByIdShouldReturnExpectedErrorMessageWhenPersonIsNotFound()
+        throws Exception {
         DeleteResult deleteResult = Mockito.mock(DeleteResult.class);
         UUID nonExistingPersonId = UUID.randomUUID();
 
         when(deleteResult.getDeletedCount()).thenReturn((long) 0);
         when(personRepository.removeById(nonExistingPersonId)).thenReturn(deleteResult);
 
-        mockMvc.perform(delete("/person/" + nonExistingPersonId)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpect(status().isNotFound())
-               .andExpect(content().string(containsString("Person with id: "
-                   + nonExistingPersonId + " was not found")));
+        mockMvc.perform(
+            delete("/person/" + nonExistingPersonId).contentType(MediaType.APPLICATION_JSON)
+                                                    .accept(MediaType.APPLICATION_JSON))
+               .andDo(print()).andExpect(status().isNotFound()).andExpect(content()
+            .string(containsString("Person with id: " + nonExistingPersonId + " was not found")));
     }
-
 }

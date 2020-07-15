@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.postitapplications.person.document.Person;
+import com.postitapplications.person.document.Person.Gender;
 import com.postitapplications.person.exception.NullOrEmptyException;
 import com.postitapplications.person.repository.PersonRepository;
 import java.util.ArrayList;
@@ -27,7 +28,8 @@ public class PersonServiceTests {
 
     @Test
     public void savePersonShouldReturnSavedPersonOnSuccessfulSave() {
-        Person expectedPerson = new Person(UUID.randomUUID(), "John Smith");
+        Person expectedPerson = new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000",
+            Gender.MALE);
 
         when(mockPersonRepository.save(expectedPerson)).thenReturn(expectedPerson);
         personService = new PersonService(mockPersonRepository);
@@ -37,7 +39,7 @@ public class PersonServiceTests {
 
     @Test
     public void savePersonShouldThrowExceptionWhenSavingAPersonWithANullName() {
-        Person invalidPerson = new Person(UUID.randomUUID(), null);
+        Person invalidPerson = new Person(UUID.randomUUID(), null, 1, 1, "10/10/2000", Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
@@ -49,7 +51,7 @@ public class PersonServiceTests {
 
     @Test
     public void savePersonShouldThrowExceptionWhenSavingAPersonWithAnEmptyName() {
-        Person invalidPerson = new Person(UUID.randomUUID(), "");
+        Person invalidPerson = new Person(UUID.randomUUID(), "", 1, 1, "10/10/2000", Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
@@ -73,8 +75,8 @@ public class PersonServiceTests {
     @Test
     public void getAllPeopleShouldReturnListOfPeopleWhenDatabaseIsNotEmpty() {
         List<Person> people = new ArrayList<>();
-        people.add(new Person(UUID.randomUUID(), "John Smith"));
-        people.add(new Person(UUID.randomUUID(), "Jane Smith"));
+        people.add(new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000", Gender.MALE));
+        people.add(new Person(UUID.randomUUID(), "Jane Smith", 1, 1, "10/10/2000", Gender.MALE));
 
         when(mockPersonRepository.findAll()).thenReturn(people);
         personService = new PersonService(mockPersonRepository);
@@ -93,7 +95,8 @@ public class PersonServiceTests {
     @Test
     public void getPersonByIdShouldReturnAPersonWhenPersonExists() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith");
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+            Gender.MALE);
 
         when(mockPersonRepository.findById(savedPersonId)).thenReturn(savedPerson);
         personService = new PersonService(mockPersonRepository);
@@ -124,7 +127,8 @@ public class PersonServiceTests {
 
     @Test
     public void updatePersonShouldReturnUpdateResultWhenUsingAValidPerson() {
-        Person updatedPerson = new Person(UUID.randomUUID(), "Jeff Smith");
+        Person updatedPerson = new Person(UUID.randomUUID(), "Jeff Smith", 1, 1, "10/10/2000",
+            Gender.MALE);
         UpdateResult mockUpdateResult = Mockito.mock(UpdateResult.class);
 
         when(mockPersonRepository.update(updatedPerson)).thenReturn(mockUpdateResult);
@@ -149,7 +153,8 @@ public class PersonServiceTests {
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            personService.updatePerson(new Person(UUID.randomUUID(), null));
+            personService
+                .updatePerson(new Person(UUID.randomUUID(), null, 1, 1, "10/10/2000", Gender.MALE));
         });
 
         assertThat(exception.getMessage()).isEqualTo("Person's name cannot be null or empty");
@@ -160,7 +165,8 @@ public class PersonServiceTests {
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullPointerException.class, () -> {
-            personService.updatePerson(new Person(null, "John Smith"));
+            personService
+                .updatePerson(new Person(null, "John Smith", 1, 1, "10/10/2000", Gender.MALE));
         });
 
         assertThat(exception.getMessage()).isEqualTo("Id cannot be null");
@@ -187,5 +193,4 @@ public class PersonServiceTests {
 
         assertThat(exception.getMessage()).isEqualTo("Id cannot be null");
     }
-
 }

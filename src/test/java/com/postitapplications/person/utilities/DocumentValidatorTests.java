@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.postitapplications.person.document.Person;
+import com.postitapplications.person.document.Person.Gender;
 import com.postitapplications.person.exception.NullOrEmptyException;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,8 @@ public class DocumentValidatorTests {
     @Test
     public void validatePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsNull() {
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            DocumentValidator.validatePerson(new Person(UUID.randomUUID(), null));
+            DocumentValidator.validatePerson(
+                new Person(UUID.randomUUID(), null, 1, 1, "10/10" + "/2000", Gender.FEMALE));
         });
 
         assertThat(exception.getMessage()).isEqualTo("Person's name cannot be null or empty");
@@ -34,7 +36,8 @@ public class DocumentValidatorTests {
     @Test
     public void validatePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsEmpty() {
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            DocumentValidator.validatePerson(new Person(UUID.randomUUID(), ""));
+            DocumentValidator
+                .validatePerson(new Person(UUID.randomUUID(), "", 1, 1, "10/10/2000", Gender.MALE));
         });
 
         assertThat(exception.getMessage()).isEqualTo("Person's name cannot be null or empty");
@@ -42,8 +45,8 @@ public class DocumentValidatorTests {
 
     @Test
     public void validatePersonShouldNotThrowAnExceptionWithValidPerson() {
-        assertDoesNotThrow(() -> DocumentValidator.validatePerson(new Person(UUID.randomUUID(),
-            "John Smith")));
+        assertDoesNotThrow(() -> DocumentValidator.validatePerson(
+            new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000", Gender.MALE)));
     }
 
     @Test
@@ -59,5 +62,4 @@ public class DocumentValidatorTests {
     public void validateIdShouldNotThrowAnExceptionWithValidId() {
         assertDoesNotThrow(() -> DocumentValidator.validateId(UUID.randomUUID()));
     }
-
 }

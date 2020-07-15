@@ -24,7 +24,9 @@ public class PersonRepository implements PersonRepo {
 
     @Override
     public Person save(UUID id, Person personToInsert) {
-        Person person = new Person(id, personToInsert.getName());
+        Person person = new Person(id, personToInsert.getName(), personToInsert.getWeight(),
+            personToInsert.getHeight(), personToInsert.getDateOfBirth(),
+            personToInsert.getGender());
         return mongoTemplate.save(person);
     }
 
@@ -42,14 +44,17 @@ public class PersonRepository implements PersonRepo {
     public UpdateResult update(Person person) {
         Update update = new Update();
         update.set("name", person.getName());
+        update.set("weight", person.getWeight());
+        update.set("height", person.getHeight());
+        update.set("dateOfBirth", person.getDateOfBirth());
+        update.set("gender", person.getGender());
 
-        return mongoTemplate.updateFirst(new Query(Criteria.where("id").is(person.getId())), update,
-            Person.class);
+        return mongoTemplate
+            .updateFirst(new Query(Criteria.where("id").is(person.getId())), update, Person.class);
     }
 
     @Override
     public DeleteResult removeById(UUID id) {
         return mongoTemplate.remove(new Query(Criteria.where("id").is(id)), Person.class);
     }
-
 }

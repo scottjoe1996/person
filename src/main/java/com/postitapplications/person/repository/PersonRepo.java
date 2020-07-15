@@ -22,5 +22,4 @@ public interface PersonRepo {
     UpdateResult update(Person person);
 
     DeleteResult removeById(UUID id);
-
 }

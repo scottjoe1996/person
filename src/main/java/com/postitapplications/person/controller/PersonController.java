@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PersonController {
 
     private final PersonService personService;
-
     @Autowired
     public PersonController(PersonService personService) {
         this.personService = personService;
@@ -47,8 +46,7 @@ public class PersonController {
 
         if (foundPerson == null) {
             throw new PersonNotFoundException(
-                String.format("Person with id: %s was not found", id)
-            );
+                String.format("Person with id: %s was not found", id));
         }
 
         return foundPerson;
@@ -60,8 +58,7 @@ public class PersonController {
 
         if (updateResult.getMatchedCount() == 0) {
             throw new PersonNotFoundException(
-                String.format("Person with id: %s was not found", person.getId())
-            );
+                String.format("Person with id: %s was not found", person.getId()));
         }
 
         return new ResponseEntity<>(person, HttpStatus.OK);
@@ -73,11 +70,9 @@ public class PersonController {
 
         if (deleteResult.getDeletedCount() == 0) {
             throw new PersonNotFoundException(
-                String.format("Person with id: %s was not found", id)
-            );
+                String.format("Person with id: %s was not found", id));
         }
 
-        return  new ResponseEntity<>(id, HttpStatus.OK);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
-
 }
