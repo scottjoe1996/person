@@ -31,7 +31,6 @@ public class PeopleIT {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
     @Autowired
     private MongoTemplate mongoTemplate;
 
