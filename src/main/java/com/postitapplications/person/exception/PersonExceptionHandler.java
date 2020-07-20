@@ -12,7 +12,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class PersonExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {NullOrEmptyException.class, NullPointerException.class})
+    @ExceptionHandler(value = {NullOrEmptyException.class, NullPointerException.class,
+        IllegalArgumentException.class})
     public ResponseEntity<Object> handleBadRequestException(Exception exception) {
         Map<String, Object> body = new LinkedHashMap<>();
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;

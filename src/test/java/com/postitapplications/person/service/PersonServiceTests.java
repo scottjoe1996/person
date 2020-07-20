@@ -38,7 +38,18 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowExceptionWhenSavingAPersonWithANullName() {
+    public void savePersonShouldThrowNullPointerExceptionWhenPersonIsNull() {
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            personService.savePerson(null);
+        });
+
+        assertThat(exception.getMessage()).isEqualTo("Person cannot be null");
+    }
+
+    @Test
+    public void savePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsNull() {
         Person invalidPerson = new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
@@ -51,7 +62,7 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowExceptionWhenSavingAPersonWithAnEmptyName() {
+    public void savePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsEmpty() {
         Person invalidPerson = new Person(UUID.randomUUID(), "", 1f, 1f, "10/10/2000", Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
@@ -63,14 +74,139 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowExceptionWhenSavingANullPerson() {
+    public void savePersonShouldThrowNullPointerExceptionWhenPersonWeightIsNull() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", null, 1f, "10/10/2000",
+            Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullPointerException.class, () -> {
-            personService.savePerson(null);
+            personService.savePerson(invalidPerson);
         });
 
-        assertThat(exception.getMessage()).isEqualTo("Person cannot be null");
+        assertThat(exception.getMessage()).isEqualTo("Person's weight cannot be null");
+    }
+
+    @Test
+    public void savePersonShouldThrowIllegalArgumentExceptionWhenPersonWeightIsZero() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 0f, 1f, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.savePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's weight cannot be less than or " + "equal to zero");
+    }
+
+    @Test
+    public void savePersonShouldThrowIllegalArgumentExceptionWhenPersonWeightIsNegative() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", -1f, 1f, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.savePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's weight cannot be less than or " + "equal to zero");
+    }
+
+    @Test
+    public void savePersonShouldThrowNullPointerExceptionWhenPersonHeightIsNull() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, null, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            personService.savePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage()).isEqualTo("Person's height cannot be null");
+    }
+
+    @Test
+    public void savePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsZero() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 0f, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.savePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's height cannot be less than or " + "equal to zero");
+    }
+
+    @Test
+    public void savePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsNegative() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, -1f, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.savePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's height cannot be less than or " + "equal to zero");
+    }
+
+    @Test
+    public void savePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsNull() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, null,
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullOrEmptyException.class, () -> {
+            personService.savePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's date of birth cannot be null or empty");
+    }
+
+    @Test
+    public void savePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsEmpty() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "", Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullOrEmptyException.class, () -> {
+            personService.savePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's date of birth cannot be null or empty");
+    }
+
+    @Test
+    public void savePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsInTheWrongFormat() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/30/20",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.savePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's date of birth must be in dd/MM/yyyy format");
+    }
+
+    @Test
+    public void savePersonShouldThrowNullPointerExceptionWhenPersonGenderIsNull() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000",
+            null);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            personService.savePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage()).isEqualTo("Person's gender cannot be null");
     }
 
     @Test
@@ -151,14 +287,150 @@ public class PersonServiceTests {
 
     @Test
     public void updatePersonShouldReturnNullOrEmptyExceptionWhenPersonNameIsNull() {
+        Person invalidPerson = new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000",
+            Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            personService.updatePerson(
-                new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000", Gender.MALE));
+            personService.updatePerson(invalidPerson);
         });
 
         assertThat(exception.getMessage()).isEqualTo("Person's name cannot be null or empty");
+    }
+
+    @Test
+    public void updatePersonShouldReturnNullOrEmptyExceptionWhenPersonNameIsEmpty() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "", 1f, 1f, "10/10/2000", Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullOrEmptyException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage()).isEqualTo("Person's name cannot be null or empty");
+    }
+
+    @Test
+    public void updatePersonShouldThrowIllegalArgumentExceptionWhenPersonWeightIsZero() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 0f, 1f, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's weight cannot be less than or " + "equal to zero");
+    }
+
+    @Test
+    public void updatePersonShouldThrowIllegalArgumentExceptionWhenPersonWeightIsNegative() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", -1f, 1f, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's weight cannot be less than or " + "equal to zero");
+    }
+
+    @Test
+    public void updatePersonShouldThrowNullPointerExceptionWhenPersonHeightIsNull() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, null, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage()).isEqualTo("Person's height cannot be null");
+    }
+
+    @Test
+    public void updatePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsZero() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 0f, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's height cannot be less than or " + "equal to zero");
+    }
+
+    @Test
+    public void updatePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsNegative() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, -1f, "10/10/2000",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's height cannot be less than or " + "equal to zero");
+    }
+
+    @Test
+    public void updatePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsNull() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, null,
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullOrEmptyException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's date of birth cannot be null or empty");
+    }
+
+    @Test
+    public void updatePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsEmpty() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "", Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullOrEmptyException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's date of birth cannot be null or empty");
+    }
+
+    @Test
+    public void updatePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsInTheWrongFormat() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/30/20",
+            Gender.MALE);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage())
+            .isEqualTo("Person's date of birth must be in dd/MM/yyyy format");
+    }
+
+    @Test
+    public void updatePersonShouldThrowNullPointerExceptionWhenPersonGenderIsNull() {
+        Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000",
+            null);
+        personService = new PersonService(mockPersonRepository);
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            personService.updatePerson(invalidPerson);
+        });
+
+        assertThat(exception.getMessage()).isEqualTo("Person's gender cannot be null");
     }
 
     @Test
