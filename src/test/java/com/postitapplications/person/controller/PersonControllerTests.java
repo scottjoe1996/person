@@ -45,7 +45,7 @@ public class PersonControllerTests {
     @Test
     public void savePersonShouldReturnExpectedErrorMessageWhenSavingWithInvalidFields()
         throws Exception {
-        Person personToSave = new Person(null, null, 1, 1, "10/10/2000", Gender.MALE);
+        Person personToSave = new Person(null, null, 1f, 1f, "10/10/2000", Gender.MALE);
 
         mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
                                        .content(objectMapper.writeValueAsString(personToSave))
@@ -72,7 +72,7 @@ public class PersonControllerTests {
     public void updatePersonShouldReturnExpectedErrorMessageWhenPersonIsNotFound()
         throws Exception {
         UpdateResult updateResult = Mockito.mock(UpdateResult.class);
-        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000",
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
 
         when(updateResult.getMatchedCount()).thenReturn((long) 0);
@@ -88,7 +88,7 @@ public class PersonControllerTests {
     @Test
     public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidFields()
         throws Exception {
-        Person personToUpdate = new Person(UUID.randomUUID(), null, 1, 1, "10/10/2000",
+        Person personToUpdate = new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000",
             Gender.MALE);
 
         mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
@@ -101,7 +101,7 @@ public class PersonControllerTests {
     @Test
     public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidId()
         throws Exception {
-        Person personToUpdate = new Person(null, "John Smith", 1, 1, "10/10/2000", Gender.MALE);
+        Person personToUpdate = new Person(null, "John Smith", 1f, 1f, "10/10/2000", Gender.MALE);
 
         mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
                                       .content(objectMapper.writeValueAsString(personToUpdate))

@@ -41,7 +41,7 @@ public class PeopleIT {
 
     @Test
     public void savePersonShouldReturnPersonSavedOnSuccessfulSave() {
-        Person personToSave = new Person(null, "John Smith", 1, 1, "10/10/2000", Gender.MALE);
+        Person personToSave = new Person(null, "John Smith", 1f, 1f, "10/10/2000", Gender.MALE);
 
         ResponseEntity<Person> responseEntity = restTemplate
             .postForEntity("/person", personToSave, Person.class);
@@ -52,7 +52,7 @@ public class PeopleIT {
 
     @Test
     public void savePersonShouldAddPersonToPersonDatabase() {
-        Person personToSave = new Person(null, "John Smith", 1, 1, "10/10/2000", Gender.MALE);
+        Person personToSave = new Person(null, "John Smith", 1f, 1f, "10/10/2000", Gender.MALE);
 
         restTemplate.postForEntity("/person", personToSave, Person.class);
         Person savedPerson = mongoTemplate.findAll(Person.class).get(0);
@@ -62,7 +62,7 @@ public class PeopleIT {
 
     @Test
     public void savePersonShouldReturnCreatedStatusCodeOnSuccessfulSave() {
-        Person personToSave = new Person(null, "John Smith", 1, 1, "10/10/2000", Gender.MALE);
+        Person personToSave = new Person(null, "John Smith", 1f, 1f, "10/10/2000", Gender.MALE);
 
         ResponseEntity<Person> responseEntity = restTemplate
             .postForEntity("/person", personToSave, Person.class);
@@ -82,7 +82,7 @@ public class PeopleIT {
 
     @Test
     public void savePersonShouldReturnBadRequestStatusCodeWhenPersonHasInvalidFields() {
-        Person personToSave = new Person(null, null, 1, 1, "10/10/2000", Gender.MALE);
+        Person personToSave = new Person(null, null, 1f, 1f, "10/10/2000", Gender.MALE);
 
         ResponseEntity<Person> responseEntity = restTemplate
             .postForEntity("/person", personToSave, Person.class);
@@ -93,7 +93,7 @@ public class PeopleIT {
 
     @Test
     public void getPeopleShouldReturnAListOfSavedPeopleOnSuccessfulResponse() {
-        Person savedPerson = new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
 
@@ -119,7 +119,7 @@ public class PeopleIT {
     @Test
     public void getPersonByIdShouldReturnFoundPerson() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
 
@@ -134,7 +134,7 @@ public class PeopleIT {
     @Test
     public void getPersonByIdShouldReturnOkStatusCodeOnSuccessfulResponse() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
 
@@ -147,7 +147,7 @@ public class PeopleIT {
 
     @Test
     public void getPersonByIdShouldReturnNotFoundStatusCodeOnNonExistingPersonId() {
-        Person savedPerson = new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
 
@@ -170,10 +170,10 @@ public class PeopleIT {
     @Test
     public void updatePersonShouldReturnOKStatusCodeOnSuccessfulUpdate() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
-        Person updatedPerson = new Person(savedPersonId, "Jeff Smith", 1, 1, "10/10/2000",
+        Person updatedPerson = new Person(savedPersonId, "Jeff Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -189,10 +189,10 @@ public class PeopleIT {
     @Test
     public void updatePersonShouldReturnUpdatedPersonOnSuccessfulUpdate() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
-        Person updatedPerson = new Person(savedPersonId, "Jeff Smith", 1, 1, "10/10/2000",
+        Person updatedPerson = new Person(savedPersonId, "Jeff Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -209,10 +209,10 @@ public class PeopleIT {
     @Test
     public void updatePersonShouldReturnNotFoundStatusCodeOnPersonWithNonExistingPersonId() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
-        Person updatedPerson = new Person(UUID.randomUUID(), "Jeff Smith", 1, 1, "10/10/2000",
+        Person updatedPerson = new Person(UUID.randomUUID(), "Jeff Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -228,10 +228,11 @@ public class PeopleIT {
     @Test
     public void updatePersonShouldReturnBadRequestStatusCodeOnPersonWithInvalidFields() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
-        Person updatedPerson = new Person(UUID.randomUUID(), null, 1, 1, "10/10/2000", Gender.MALE);
+        Person updatedPerson = new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000",
+            Gender.MALE);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Person> httpEntity = new HttpEntity<>(updatedPerson, headers);
@@ -246,7 +247,7 @@ public class PeopleIT {
     @Test
     public void deletePersonByIdShouldReturnOkStatusCodeOnSuccessfulDelete() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
         HttpHeaders headers = new HttpHeaders();
@@ -264,7 +265,7 @@ public class PeopleIT {
     @Test
     public void deletePersonByIdShouldReturnDeletedPersonsIdOnSuccessfulDelete() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         mongoTemplate.save(savedPerson);
         HttpHeaders headers = new HttpHeaders();

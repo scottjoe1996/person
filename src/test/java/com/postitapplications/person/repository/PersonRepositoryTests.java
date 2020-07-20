@@ -28,7 +28,7 @@ public class PersonRepositoryTests {
     @BeforeEach
     public void setUp() {
         mongoTemplate
-            .save(new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000", Gender.MALE));
+            .save(new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000", Gender.MALE));
         personRepository = new PersonRepository(mongoTemplate);
     }
 
@@ -72,7 +72,7 @@ public class PersonRepositoryTests {
     @Test
     public void updateShouldUpdatePersonWithNewFields() {
         UUID savedPersonId = mongoTemplate.findAll(Person.class).get(0).getId();
-        Person updatedPerson = new Person(savedPersonId, "Joanne Smith", 2, 2, "10/10/2010",
+        Person updatedPerson = new Person(savedPersonId, "Joanne Smith", 2f, 2f, "10/10/2010",
             Gender.FEMALE);
 
         personRepository.update(updatedPerson);
@@ -87,7 +87,7 @@ public class PersonRepositoryTests {
 
     @Test
     public void updateShouldReturnMatchedCount0WithInvalidId() {
-        Person nonExistingPerson = new Person(UUID.randomUUID(), "Jeff Smith", 1, 1, "10/10/2000",
+        Person nonExistingPerson = new Person(UUID.randomUUID(), "Jeff Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
 
         assertThat(personRepository.update(nonExistingPerson).getMatchedCount()).isEqualTo(0);
@@ -108,7 +108,7 @@ public class PersonRepositoryTests {
 
     @Test
     public void saveShouldAddAPersonToThePersonDatabase() {
-        personRepository.save(new Person(null, "Jeff Smith", 1, 1, "10/10/2000", Gender.MALE));
+        personRepository.save(new Person(null, "Jeff Smith", 1f, 1f, "10/10/2000", Gender.MALE));
 
         assertThat(mongoTemplate.findAll(Person.class).size()).isEqualTo(2);
     }
@@ -117,7 +117,7 @@ public class PersonRepositoryTests {
     public void saveShouldAddAPersonToThePersonDatabaseWithAGeneratedUUID() {
         mongoTemplate.dropCollection(Person.class);
 
-        personRepository.save(new Person(null, "Jeff Smith", 1, 1, "10/10/2000", Gender.MALE));
+        personRepository.save(new Person(null, "Jeff Smith", 1f, 1f, "10/10/2000", Gender.MALE));
 
         assertThat(mongoTemplate.findAll(Person.class).get(0).getId()).isNotNull();
     }
@@ -126,7 +126,7 @@ public class PersonRepositoryTests {
     public void saveShouldAddAPersonToThePersonDatabaseWithTheExpectedFields() {
         mongoTemplate.dropCollection(Person.class);
 
-        personRepository.save(new Person(null, "Jeff Smith", 1, 1, "10/10/2000", Gender.MALE));
+        personRepository.save(new Person(null, "Jeff Smith", 1f, 1f, "10/10/2000", Gender.MALE));
         Person savedPerson = mongoTemplate.findAll(Person.class).get(0);
 
         assertThat(savedPerson.getName()).isEqualTo("Jeff Smith");
@@ -142,7 +142,7 @@ public class PersonRepositoryTests {
         UUID specifiedUUID = UUID.randomUUID();
 
         personRepository
-            .save(specifiedUUID, new Person(null, "Jeff Smith", 1, 1, "10/10/2000", Gender.MALE));
+            .save(specifiedUUID, new Person(null, "Jeff Smith", 1f, 1f, "10/10/2000", Gender.MALE));
 
         assertThat(mongoTemplate.findAll(Person.class).get(0).getId()).isEqualTo(specifiedUUID);
     }
@@ -151,7 +151,7 @@ public class PersonRepositoryTests {
     public void saveShouldThrowExceptionWhenUsingNullId() {
         Exception exception = assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             personRepository
-                .save(null, new Person(null, "Jeff Smith", 1, 1, "10/10/2000", Gender.MALE));
+                .save(null, new Person(null, "Jeff Smith", 1f, 1f, "10/10/2000", Gender.MALE));
         });
 
         assertThat(exception.getMessage()).contains("Cannot autogenerate id");

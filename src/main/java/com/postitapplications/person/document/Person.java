@@ -14,16 +14,16 @@ public class Person {
     @NotBlank
     private final String name;
     @NotBlank
-    private final float weight;
+    private final Float weight;
     @NotBlank
-    private final float height;
+    private final Float height;
     @NotBlank
     private final String dateOfBirth;
     @NotBlank
     private final Gender gender;
 
     public Person(@JsonProperty("id") UUID id, @JsonProperty("name") String name,
-        @JsonProperty("weight") float weight, @JsonProperty("height") float height,
+        @JsonProperty("weight") Float weight, @JsonProperty("height") Float height,
         @JsonProperty("dateOfBirth") String dateOfBirth, @JsonProperty("gender") Gender gender) {
         this.id = id;
         this.name = name;

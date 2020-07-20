@@ -31,18 +31,18 @@ public class PersonService {
     }
 
     public Person getPersonById(UUID id) {
-        DocumentValidator.validateId(id);
+        DocumentValidator.validatePersonId(id);
         return personRepo.findById(id);
     }
 
     public UpdateResult updatePerson(Person person) {
         DocumentValidator.validatePerson(person);
-        DocumentValidator.validateId(person.getId());
+        DocumentValidator.validatePersonId(person.getId());
         return personRepo.update(person);
     }
 
     public DeleteResult deletePersonById(UUID id) {
-        DocumentValidator.validateId(id);
+        DocumentValidator.validatePersonId(id);
         return personRepo.removeById(id);
     }
 }

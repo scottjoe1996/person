@@ -28,7 +28,7 @@ public class PersonServiceTests {
 
     @Test
     public void savePersonShouldReturnSavedPersonOnSuccessfulSave() {
-        Person expectedPerson = new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000",
+        Person expectedPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
 
         when(mockPersonRepository.save(expectedPerson)).thenReturn(expectedPerson);
@@ -39,7 +39,8 @@ public class PersonServiceTests {
 
     @Test
     public void savePersonShouldThrowExceptionWhenSavingAPersonWithANullName() {
-        Person invalidPerson = new Person(UUID.randomUUID(), null, 1, 1, "10/10/2000", Gender.MALE);
+        Person invalidPerson = new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000",
+            Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
@@ -51,7 +52,7 @@ public class PersonServiceTests {
 
     @Test
     public void savePersonShouldThrowExceptionWhenSavingAPersonWithAnEmptyName() {
-        Person invalidPerson = new Person(UUID.randomUUID(), "", 1, 1, "10/10/2000", Gender.MALE);
+        Person invalidPerson = new Person(UUID.randomUUID(), "", 1f, 1f, "10/10/2000", Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
@@ -75,8 +76,8 @@ public class PersonServiceTests {
     @Test
     public void getAllPeopleShouldReturnListOfPeopleWhenDatabaseIsNotEmpty() {
         List<Person> people = new ArrayList<>();
-        people.add(new Person(UUID.randomUUID(), "John Smith", 1, 1, "10/10/2000", Gender.MALE));
-        people.add(new Person(UUID.randomUUID(), "Jane Smith", 1, 1, "10/10/2000", Gender.MALE));
+        people.add(new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000", Gender.MALE));
+        people.add(new Person(UUID.randomUUID(), "Jane Smith", 1f, 1f, "10/10/2000", Gender.MALE));
 
         when(mockPersonRepository.findAll()).thenReturn(people);
         personService = new PersonService(mockPersonRepository);
@@ -95,7 +96,7 @@ public class PersonServiceTests {
     @Test
     public void getPersonByIdShouldReturnAPersonWhenPersonExists() {
         UUID savedPersonId = UUID.randomUUID();
-        Person savedPerson = new Person(savedPersonId, "John Smith", 1, 1, "10/10/2000",
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
 
         when(mockPersonRepository.findById(savedPersonId)).thenReturn(savedPerson);
@@ -127,7 +128,7 @@ public class PersonServiceTests {
 
     @Test
     public void updatePersonShouldReturnUpdateResultWhenUsingAValidPerson() {
-        Person updatedPerson = new Person(UUID.randomUUID(), "Jeff Smith", 1, 1, "10/10/2000",
+        Person updatedPerson = new Person(UUID.randomUUID(), "Jeff Smith", 1f, 1f, "10/10/2000",
             Gender.MALE);
         UpdateResult mockUpdateResult = Mockito.mock(UpdateResult.class);
 
@@ -153,8 +154,8 @@ public class PersonServiceTests {
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            personService
-                .updatePerson(new Person(UUID.randomUUID(), null, 1, 1, "10/10/2000", Gender.MALE));
+            personService.updatePerson(
+                new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000", Gender.MALE));
         });
 
         assertThat(exception.getMessage()).isEqualTo("Person's name cannot be null or empty");
@@ -166,7 +167,7 @@ public class PersonServiceTests {
 
         Exception exception = assertThrows(NullPointerException.class, () -> {
             personService
-                .updatePerson(new Person(null, "John Smith", 1, 1, "10/10/2000", Gender.MALE));
+                .updatePerson(new Person(null, "John Smith", 1f, 1f, "10/10/2000", Gender.MALE));
         });
 
         assertThat(exception.getMessage()).isEqualTo("Id cannot be null");
