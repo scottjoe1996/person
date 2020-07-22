@@ -183,7 +183,7 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsInTheWrongFormat() {
+    public void savePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsInWrongFormat() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/30/20",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
@@ -407,7 +407,7 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsInTheWrongFormat() {
+    public void updatePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsInWrongFormat() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/30/20",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);

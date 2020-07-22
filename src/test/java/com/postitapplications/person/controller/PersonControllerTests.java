@@ -43,8 +43,7 @@ public class PersonControllerTests {
     }
 
     @Test
-    public void savePersonShouldReturnExpectedErrorMessageWhenSavingWithInvalidFields()
-        throws Exception {
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonNameIsNull() throws Exception {
         Person personToSave = new Person(null, null, 1f, 1f, "10/10/2000", Gender.MALE);
 
         mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
@@ -52,6 +51,125 @@ public class PersonControllerTests {
                                        .accept(MediaType.APPLICATION_JSON)).andDo(print())
                .andExpect(status().isBadRequest()).andExpect(
             content().string(containsString("Person's name cannot be null or empty")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonNameIsEmpty() throws Exception {
+        Person personToSave = new Person(null, "", 1f, 1f, "10/10/2000", Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(
+            content().string(containsString("Person's name cannot be null or empty")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonWeightIsNull()
+        throws Exception {
+        Person personToSave = new Person(null, "John Smith", null, 1f, "10/10/2000", Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest())
+               .andExpect(content().string(containsString("Person's weight cannot be null")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonWeightIsZero()
+        throws Exception {
+        Person personToSave = new Person(null, "John Smith", 0f, 1f, "10/10/2000", Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's weight cannot be less than or equal to " + "zero")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonWeightIsNegative()
+        throws Exception {
+        Person personToSave = new Person(null, "John Smith", -1f, 1f, "10/10/2000", Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's weight cannot be less than or equal to zero")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonHeightIsNull()
+        throws Exception {
+        Person personToSave = new Person(null, "John Smith", 1f, null, "10/10/2000", Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest())
+               .andExpect(content().string(containsString("Person's height cannot be null")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonHeightIsZero()
+        throws Exception {
+        Person personToSave = new Person(null, "John Smith", 1f, 0f, "10/10/2000", Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's height cannot be less than or equal to zero")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonHeightIsNegative()
+        throws Exception {
+        Person personToSave = new Person(null, "John Smith", 1f, -1f, "10/10/2000", Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's height cannot be less than or equal to zero")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonDateOfBirthIsNull()
+        throws Exception {
+        Person personToSave = new Person(null, "John Smith", 1f, 1f, null, Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(
+            content().string(containsString("Person's date of birth cannot be null or empty")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonDateOfBirthIsEmpty()
+        throws Exception {
+        Person personToSave = new Person(null, "John Smith", 1f, 1f, "", Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(
+            content().string(containsString("Person's date of birth cannot be null or empty")));
+    }
+
+    @Test
+    public void savePersonShouldReturnExpectedErrorMessageWhenPersonDateOfBirthIsInWrongFormat()
+        throws Exception {
+        Person personToSave = new Person(null, "John Smith", 1f, 1f, "10/30/20", Gender.MALE);
+
+        mockMvc.perform(post("/person").contentType(MediaType.APPLICATION_JSON)
+                                       .content(objectMapper.writeValueAsString(personToSave))
+                                       .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's date of birth must be in dd/MM/yyyy format")));
     }
 
     @Test
@@ -86,7 +204,7 @@ public class PersonControllerTests {
     }
 
     @Test
-    public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidFields()
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonNameIsNull()
         throws Exception {
         Person personToUpdate = new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000",
             Gender.MALE);
@@ -99,7 +217,137 @@ public class PersonControllerTests {
     }
 
     @Test
-    public void updatePersonShouldReturnExpectedErrorMessageWhenUpdatingPersonWithInvalidId()
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonNameIsEmpty()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "", 1f, 1f, "10/10/2000",
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(
+            content().string(containsString("Person's name cannot be null or empty")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonWeightIsNull()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", null, 1f, "10/10/2000",
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest())
+               .andExpect(content().string(containsString("Person's weight cannot be null")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonWeightIsZero()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 0f, 1f, "10/10/2000",
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's weight cannot be less than or equal to zero")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonWeightIsNegative()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", -1f, 1f, "10/10/2000",
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's weight cannot be less than or equal to zero")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonHeightIsNull()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 1f, null, "10/10/2000",
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest())
+               .andExpect(content().string(containsString("Person's height cannot be null")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonHeightIsZero()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 1f, 0f, "10/10/2000",
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's height cannot be less than or equal to zero")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonHeightIsNegative()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 1f, -1f, "10/10/2000",
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's height cannot be less than or equal to zero")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonDateOfBirthIsNull()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, null,
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's date of birth cannot be null or empty")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonDateOfBirthIsEmpty()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "",
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's date of birth cannot be null or empty")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonDateOfBirthIsInWrongFormat()
+        throws Exception {
+        Person personToUpdate = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/30/20",
+            Gender.MALE);
+
+        mockMvc.perform(put("/person").contentType(MediaType.APPLICATION_JSON)
+                                      .content(objectMapper.writeValueAsString(personToUpdate))
+                                      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+               .andExpect(status().isBadRequest()).andExpect(content()
+            .string(containsString("Person's date of birth must be in dd/MM/yyyy format")));
+    }
+
+    @Test
+    public void updatePersonShouldReturnExpectedErrorMessageWhenPersonIdIsNull()
         throws Exception {
         Person personToUpdate = new Person(null, "John Smith", 1f, 1f, "10/10/2000", Gender.MALE);
 

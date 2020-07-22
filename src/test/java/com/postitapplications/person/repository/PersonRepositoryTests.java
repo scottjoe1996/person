@@ -78,6 +78,7 @@ public class PersonRepositoryTests {
         personRepository.update(updatedPerson);
         Person personFound = mongoTemplate.findById(savedPersonId, Person.class);
 
+        assertThat(personFound.getId()).isEqualTo(savedPersonId);
         assertThat(personFound.getName()).isEqualTo("Joanne Smith");
         assertThat(personFound.getWeight()).isEqualTo(2);
         assertThat(personFound.getHeight()).isEqualTo(2);
