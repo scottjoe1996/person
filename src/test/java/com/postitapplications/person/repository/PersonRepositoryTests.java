@@ -55,10 +55,19 @@ public class PersonRepositoryTests {
     }
 
     @Test
+    public void findByIdShouldThrowIllegalArgumentExceptionWhenIdIsNull() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            personRepository.findById(null);
+        });
+
+        assertThat(exception.getMessage()).contains("Id must not be null!");
+    }
+
+    @Test
     public void removeByIdShouldRemoveSavedPerson() {
         UUID savedPersonId = mongoTemplate.findAll(Person.class).get(0).getId();
 
-        assertThat(personRepository.findAll().size()).isEqualTo(1);
+        assertThat(mongoTemplate.findAll(Person.class).size()).isEqualTo(1);
         personRepository.removeById(savedPersonId);
 
         assertThat(personRepository.findAll().size()).isEqualTo(0);

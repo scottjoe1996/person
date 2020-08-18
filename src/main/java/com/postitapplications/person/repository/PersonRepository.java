@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository("MongoDBRepo")
 public class PersonRepository implements PersonRepo {
 
-    final MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
     public PersonRepository(MongoTemplate mongoTemplate) {
@@ -23,10 +23,10 @@ public class PersonRepository implements PersonRepo {
     }
 
     @Override
-    public Person save(UUID id, Person personToInsert) {
-        Person person = new Person(id, personToInsert.getName(), personToInsert.getWeight(),
-            personToInsert.getHeight(), personToInsert.getDateOfBirth(),
-            personToInsert.getGender());
+    public Person save(UUID id, Person personToSave) {
+        Person person = new Person(id, personToSave.getName(), personToSave.getWeight(),
+            personToSave.getHeight(), personToSave.getDateOfBirth(),
+            personToSave.getGender());
         return mongoTemplate.save(person);
     }
 
