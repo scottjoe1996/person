@@ -4,7 +4,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.postitapplications.person.document.Person;
 import com.postitapplications.person.repository.PersonRepo;
-import com.postitapplications.person.utilities.DocumentValidator;
+import com.postitapplications.person.utility.DocumentValidator;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;

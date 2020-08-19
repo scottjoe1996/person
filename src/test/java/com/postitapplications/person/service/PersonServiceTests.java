@@ -97,7 +97,7 @@ public class PersonServiceTests {
         });
 
         assertThat(exception.getMessage())
-            .isEqualTo("Person's weight cannot be less than or " + "equal to zero");
+            .isEqualTo("Person's weight cannot be less than or equal to zero");
     }
 
     @Test
@@ -111,7 +111,7 @@ public class PersonServiceTests {
         });
 
         assertThat(exception.getMessage())
-            .isEqualTo("Person's weight cannot be less than or " + "equal to zero");
+            .isEqualTo("Person's weight cannot be less than or equal to zero");
     }
 
     @Test
@@ -138,7 +138,7 @@ public class PersonServiceTests {
         });
 
         assertThat(exception.getMessage())
-            .isEqualTo("Person's height cannot be less than or " + "equal to zero");
+            .isEqualTo("Person's height cannot be less than or equal to zero");
     }
 
     @Test
@@ -152,7 +152,7 @@ public class PersonServiceTests {
         });
 
         assertThat(exception.getMessage())
-            .isEqualTo("Person's height cannot be less than or " + "equal to zero");
+            .isEqualTo("Person's height cannot be less than or equal to zero");
     }
 
     @Test
@@ -275,7 +275,7 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldReturnNullPointerExceptionWhenPersonIsNull() {
+    public void updatePersonShouldThrowNullPointerExceptionWhenPersonIsNull() {
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullPointerException.class, () -> {
@@ -286,7 +286,7 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldReturnNullOrEmptyExceptionWhenPersonNameIsNull() {
+    public void updatePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsNull() {
         Person invalidPerson = new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
@@ -299,7 +299,7 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldReturnNullOrEmptyExceptionWhenPersonNameIsEmpty() {
+    public void updatePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsEmpty() {
         Person invalidPerson = new Person(UUID.randomUUID(), "", 1f, 1f, "10/10/2000", Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
@@ -321,7 +321,7 @@ public class PersonServiceTests {
         });
 
         assertThat(exception.getMessage())
-            .isEqualTo("Person's weight cannot be less than or " + "equal to zero");
+            .isEqualTo("Person's weight cannot be less than or equal to zero");
     }
 
     @Test
@@ -335,7 +335,7 @@ public class PersonServiceTests {
         });
 
         assertThat(exception.getMessage())
-            .isEqualTo("Person's weight cannot be less than or " + "equal to zero");
+            .isEqualTo("Person's weight cannot be less than or equal to zero");
     }
 
     @Test
@@ -362,7 +362,7 @@ public class PersonServiceTests {
         });
 
         assertThat(exception.getMessage())
-            .isEqualTo("Person's height cannot be less than or " + "equal to zero");
+            .isEqualTo("Person's height cannot be less than or equal to zero");
     }
 
     @Test
@@ -376,7 +376,7 @@ public class PersonServiceTests {
         });
 
         assertThat(exception.getMessage())
-            .isEqualTo("Person's height cannot be less than or " + "equal to zero");
+            .isEqualTo("Person's height cannot be less than or equal to zero");
     }
 
     @Test
@@ -457,7 +457,7 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void deletePersonByIdShouldThrowNullPointerExceptionWhenUsingANullId() {
+    public void deletePersonByIdShouldThrowNullPointerExceptionWhenIdIsNull() {
         personService = new PersonService(mockPersonRepository);
 
         Exception exception = assertThrows(NullPointerException.class, () -> {

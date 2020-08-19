@@ -1,4 +1,4 @@
-package com.postitapplications.person.utilities;
+package com.postitapplications.person.utility;
 
 import com.postitapplications.person.document.Person;
 import com.postitapplications.person.document.Person.Gender;
@@ -16,20 +16,20 @@ public class DocumentValidator {
             throw new NullPointerException("Person cannot be null");
         }
 
-        validatePersonName(person.getName());
-        validatePersonWeight(person.getWeight());
-        validatePersonHeight(person.getHeight());
-        validatePersonDateOfBirth(person.getDateOfBirth());
-        validatePersonGender(person.getGender());
+        validateName(person.getName());
+        validateWeight(person.getWeight());
+        validateHeight(person.getHeight());
+        validateDateOfBirth(person.getDateOfBirth());
+        validateGender(person.getGender());
     }
 
-    private static void validatePersonName(String personName) {
+    private static void validateName(String personName) {
         if (personName == null || personName.isEmpty()) {
             throw new NullOrEmptyException("Person's name cannot be null or empty");
         }
     }
 
-    private static void validatePersonWeight(Float personWeight) {
+    private static void validateWeight(Float personWeight) {
         if (personWeight == null) {
             throw new NullPointerException("Person's weight cannot be null");
         }
@@ -40,7 +40,7 @@ public class DocumentValidator {
         }
     }
 
-    private static void validatePersonHeight(Float personHeight) {
+    private static void validateHeight(Float personHeight) {
         if (personHeight == null) {
             throw new NullPointerException("Person's height cannot be null");
         }
@@ -51,7 +51,7 @@ public class DocumentValidator {
         }
     }
 
-    private static void validatePersonDateOfBirth(String dateOfBirth) {
+    private static void validateDateOfBirth(String dateOfBirth) {
         if (dateOfBirth == null || dateOfBirth.isEmpty()) {
             throw new NullOrEmptyException("Person's date of birth cannot be null or empty");
         }
@@ -67,7 +67,7 @@ public class DocumentValidator {
         }
     }
 
-    private static void validatePersonGender(Gender gender) {
+    private static void validateGender(Gender gender) {
         if (gender == null) {
             throw new NullPointerException("Person's gender cannot be null");
         }

@@ -1,4 +1,4 @@
-package com.postitapplications.person.utilities;
+package com.postitapplications.person.utility;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
