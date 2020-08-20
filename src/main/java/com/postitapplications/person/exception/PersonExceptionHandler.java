@@ -1,10 +1,13 @@
 package com.postitapplications.person.exception;
 
+import com.postitapplications.exception.exceptions.NullOrEmptyException;
+import com.postitapplications.exception.exceptions.PersonNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import com.postitapplications.exception.ExceptionResponseBody;
 
 @RestControllerAdvice
 public class PersonExceptionHandler extends ResponseEntityExceptionHandler {

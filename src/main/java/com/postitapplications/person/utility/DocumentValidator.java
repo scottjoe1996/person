@@ -1,8 +1,8 @@
 package com.postitapplications.person.utility;
 
+import com.postitapplications.exception.exceptions.NullOrEmptyException;
 import com.postitapplications.person.document.Person;
 import com.postitapplications.person.document.Person.Gender;
-import com.postitapplications.person.exception.NullOrEmptyException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.UUID;

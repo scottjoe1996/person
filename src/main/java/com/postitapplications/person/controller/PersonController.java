@@ -2,8 +2,8 @@ package com.postitapplications.person.controller;
 
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import com.postitapplications.exception.exceptions.PersonNotFoundException;
 import com.postitapplications.person.document.Person;
-import com.postitapplications.person.exception.PersonNotFoundException;
 import com.postitapplications.person.service.PersonService;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PersonController {
 
     private final PersonService personService;
+
     @Autowired
     public PersonController(PersonService personService) {
         this.personService = personService;
