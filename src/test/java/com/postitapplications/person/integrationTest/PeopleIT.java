@@ -47,7 +47,7 @@ public class PeopleIT {
             .postForEntity("/person", personToSave, Person.class);
         Person personSaved = responseEntity.getBody();
 
-        assertThat(personSaved.getName()).isEqualTo(personSaved.getName());
+        assertThat(personSaved.getName()).isEqualTo(personToSave.getName());
     }
 
     @Test
