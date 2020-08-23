@@ -147,10 +147,6 @@ public class PeopleIT {
 
     @Test
     public void getPersonByIdShouldReturnNotFoundStatusCodeOnNonExistingPersonId() {
-        Person savedPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000",
-            Gender.MALE);
-        mongoTemplate.save(savedPerson);
-
         ResponseEntity<Person> responseEntity = restTemplate
             .getForEntity("/person/" + UUID.randomUUID().toString(), Person.class);
         HttpStatus responseEntityStatusCode = responseEntity.getStatusCode();
