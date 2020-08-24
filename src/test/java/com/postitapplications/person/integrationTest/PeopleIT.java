@@ -203,6 +203,24 @@ public class PeopleIT {
     }
 
     @Test
+    public void updatePersonShouldUpdatePersonOnSuccessfulUpdate() {
+        UUID savedPersonId = UUID.randomUUID();
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
+            Gender.MALE);
+        mongoTemplate.save(savedPerson);
+        Person updatedPerson = new Person(savedPersonId, "Jeff Smith", 1f, 1f, "10/10/2000",
+            Gender.MALE);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Person> httpEntity = new HttpEntity<>(updatedPerson, headers);
+
+        restTemplate.exchange("/person/", HttpMethod.PUT, httpEntity, Person.class);
+        Person personToTest = mongoTemplate.findAll(Person.class).get(0);
+
+        assertThat(personToTest.getName()).isEqualTo("Jeff Smith");
+    }
+
+    @Test
     public void updatePersonShouldReturnNotFoundStatusCodeOnPersonWithNonExistingPersonId() {
         UUID savedPersonId = UUID.randomUUID();
         Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
