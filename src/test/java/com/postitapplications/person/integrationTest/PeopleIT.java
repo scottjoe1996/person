@@ -295,6 +295,22 @@ public class PeopleIT {
     }
 
     @Test
+    public void deleteUserByIdShouldDeleteUserOnSuccessfulDelete() {
+        UUID savedPersonId = UUID.randomUUID();
+        Person savedPerson = new Person(savedPersonId, "John Smith", 1f, 1f, "10/10/2000",
+            Gender.MALE);
+        mongoTemplate.save(savedPerson);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+
+        restTemplate.exchange("/person/" + savedPersonId.toString(), HttpMethod.DELETE, httpEntity,
+            UUID.class);
+
+        assertThat(mongoTemplate.findAll(Person.class).size()).isEqualTo(0);
+    }
+
+    @Test
     public void deletePersonByIdShouldReturnNotFoundStatusCodeWithNonExistingPersonId() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
