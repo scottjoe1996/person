@@ -72,12 +72,12 @@ public class PeopleIT {
     }
 
     @Test
-    public void savePersonShouldReturnUnsupportedMediaTypeStatusCodeWhenPersonIsNull() {
+    public void savePersonShouldReturnBadRequestStatusCodeWhenPersonIsNull() {
         ResponseEntity<Person> responseEntity = restTemplate
             .postForEntity("/person", null, Person.class);
         HttpStatus responseStatusCode = responseEntity.getStatusCode();
 
-        assertThat(responseStatusCode).isEqualTo(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        assertThat(responseStatusCode).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
