@@ -1,4 +1,4 @@
-package com.postitapplications.person.integrationTest;
+package com.postitapplications.person.integrationTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,7 +26,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
-@ExtendWith(SpringExtension.class)
 public class PeopleIT {
 
     @Autowired
