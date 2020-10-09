@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.postitapplications.exception.exceptions.NullOrEmptyException;
+import com.postitapplications.exception.exceptions.ValidationException;
+import com.postitapplications.exception.exceptions.BusinessLogicException;
 import com.postitapplications.person.document.Person;
 import com.postitapplications.person.document.Person.Gender;
 import com.postitapplications.person.repository.PersonRepository;
@@ -38,10 +40,10 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowNullPointerExceptionWhenPersonIsNull() {
+    public void savePersonShouldThrowValidationExceptionWhenPersonIsNull() {
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService.savePerson(null);
         });
 
@@ -74,12 +76,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowNullPointerExceptionWhenPersonWeightIsNull() {
+    public void savePersonShouldThrowValidationExceptionWhenPersonWeightIsNull() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", null, 1f, "10/10/2000",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService.savePerson(invalidPerson);
         });
 
@@ -115,12 +117,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowNullPointerExceptionWhenPersonHeightIsNull() {
+    public void savePersonShouldThrowValidationExceptionWhenPersonHeightIsNull() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, null, "10/10/2000",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService.savePerson(invalidPerson);
         });
 
@@ -128,12 +130,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsZero() {
+    public void savePersonShouldThrowBusinessLogicExceptionWhenPersonHeightIsZero() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 0f, "10/10/2000",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
             personService.savePerson(invalidPerson);
         });
 
@@ -142,12 +144,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsNegative() {
+    public void savePersonShouldThrowBusinessLogicExceptionWhenPersonHeightIsNegative() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, -1f, "10/10/2000",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
             personService.savePerson(invalidPerson);
         });
 
@@ -183,12 +185,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsInWrongFormat() {
+    public void savePersonShouldThrowBusinessLogicExceptionWhenPersonDateOfBirthIsInWrongFormat() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/30/20",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
             personService.savePerson(invalidPerson);
         });
 
@@ -197,12 +199,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void savePersonShouldThrowNullPointerExceptionWhenPersonGenderIsNull() {
+    public void savePersonShouldThrowValidationExceptionWhenPersonGenderIsNull() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000",
             null);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService.savePerson(invalidPerson);
         });
 
@@ -252,10 +254,10 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void getPersonByIdShouldThrowNullPointerExceptionWhenUsingNullId() {
+    public void getPersonByIdShouldThrowValidationExceptionWhenUsingNullId() {
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService.getPersonById(null);
         });
 
@@ -275,10 +277,10 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldThrowNullPointerExceptionWhenPersonIsNull() {
+    public void updatePersonShouldThrowValidationExceptionWhenPersonIsNull() {
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService.updatePerson(null);
         });
 
@@ -339,12 +341,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldThrowNullPointerExceptionWhenPersonHeightIsNull() {
+    public void updatePersonShouldThrowValidationExceptionWhenPersonHeightIsNull() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, null, "10/10/2000",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService.updatePerson(invalidPerson);
         });
 
@@ -352,12 +354,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsZero() {
+    public void updatePersonShouldThrowBusinessLogicExceptionWhenPersonHeightIsZero() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 0f, "10/10/2000",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
             personService.updatePerson(invalidPerson);
         });
 
@@ -366,12 +368,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsNegative() {
+    public void updatePersonShouldThrowBusinessLogicExceptionWhenPersonHeightIsNegative() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, -1f, "10/10/2000",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
             personService.updatePerson(invalidPerson);
         });
 
@@ -407,12 +409,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsInWrongFormat() {
+    public void updatePersonShouldThrowBusinessLogicExceptionWhenPersonDateOfBirthIsInWrongFormat() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/30/20",
             Gender.MALE);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
             personService.updatePerson(invalidPerson);
         });
 
@@ -421,12 +423,12 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldThrowNullPointerExceptionWhenPersonGenderIsNull() {
+    public void updatePersonShouldThrowValidationExceptionWhenPersonGenderIsNull() {
         Person invalidPerson = new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000",
             null);
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService.updatePerson(invalidPerson);
         });
 
@@ -434,10 +436,10 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void updatePersonShouldReturnNullPointerExceptionWhenPersonIdIsNull() {
+    public void updatePersonShouldReturnValidationExceptionWhenPersonIdIsNull() {
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService
                 .updatePerson(new Person(null, "John Smith", 1f, 1f, "10/10/2000", Gender.MALE));
         });
@@ -457,10 +459,10 @@ public class PersonServiceTests {
     }
 
     @Test
-    public void deletePersonByIdShouldThrowNullPointerExceptionWhenIdIsNull() {
+    public void deletePersonByIdShouldThrowValidationExceptionWhenIdIsNull() {
         personService = new PersonService(mockPersonRepository);
 
-        Exception exception = assertThrows(NullPointerException.class, () -> {
+        Exception exception = assertThrows(ValidationException.class, () -> {
             personService.deletePersonById(null);
         });
 

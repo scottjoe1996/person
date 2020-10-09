@@ -2,6 +2,7 @@ package com.postitapplications.person.exception;
 
 import com.postitapplications.exception.exceptions.NullOrEmptyException;
 import com.postitapplications.exception.exceptions.PersonNotFoundException;
+import com.postitapplications.exception.exceptions.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,8 +13,7 @@ import com.postitapplications.exception.ExceptionResponseBody;
 @RestControllerAdvice
 public class PersonExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {NullOrEmptyException.class, NullPointerException.class,
-        IllegalArgumentException.class})
+    @ExceptionHandler(value = ValidationException.class)
     public ResponseEntity<Object> handleBadRequestException(Exception exception) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
         ExceptionResponseBody exceptionResponseBody = new ExceptionResponseBody(badRequest,

@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.postitapplications.exception.exceptions.BusinessLogicException;
 import com.postitapplications.exception.exceptions.NullOrEmptyException;
+import com.postitapplications.exception.exceptions.ValidationException;
 import com.postitapplications.person.document.Person;
 import com.postitapplications.person.document.Person.Gender;
 import java.util.UUID;
@@ -12,12 +14,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class DocumentValidatorTests {
+public class PersonValidatorTests {
 
     @Test
-    public void validatePersonShouldThrowNullPointerExceptionWhenPersonIsNull() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            DocumentValidator.validatePerson(null);
+    public void validatePersonShouldThrowValidationExceptionWhenPersonIsNull() {
+        Exception exception = assertThrows(ValidationException.class, () -> {
+            PersonValidator.validatePerson(null);
         });
 
         assertThat(exception.getMessage()).isEqualTo("Person cannot be null");
@@ -26,7 +28,7 @@ public class DocumentValidatorTests {
     @Test
     public void validatePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsNull() {
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            DocumentValidator.validatePerson(
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), null, 1f, 1f, "10/10/2000", Gender.FEMALE));
         });
 
@@ -36,7 +38,7 @@ public class DocumentValidatorTests {
     @Test
     public void validatePersonShouldThrowNullOrEmptyExceptionWhenPersonNameIsEmpty() {
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            DocumentValidator.validatePerson(
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "", 1f, 1f, "10/10/2000", Gender.MALE));
         });
 
@@ -44,9 +46,9 @@ public class DocumentValidatorTests {
     }
 
     @Test
-    public void validatePersonShouldThrowNullPointerExceptionWhenPersonWeightIsNull() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            DocumentValidator.validatePerson(
+    public void validatePersonShouldThrowValidationExceptionWhenPersonWeightIsNull() {
+        Exception exception = assertThrows(ValidationException.class, () -> {
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", null, 1f, "10/10/2000", Gender.MALE));
         });
 
@@ -56,7 +58,7 @@ public class DocumentValidatorTests {
     @Test
     public void validatePersonShouldThrowIllegalArgumentExceptionWhenPersonWeightIsLessThanZero() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            DocumentValidator.validatePerson(
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", -1f, 1f, "10/10/2000", Gender.MALE));
         });
 
@@ -67,7 +69,7 @@ public class DocumentValidatorTests {
     @Test
     public void validatePersonShouldThrowIllegalArgumentExceptionWhenPersonWeightIsZero() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            DocumentValidator.validatePerson(
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", 0f, 1f, "10/10/2000", Gender.MALE));
         });
 
@@ -76,9 +78,9 @@ public class DocumentValidatorTests {
     }
 
     @Test
-    public void validatePersonShouldThrowNullPointerExceptionWhenPersonHeightIsNull() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            DocumentValidator.validatePerson(
+    public void validatePersonShouldThrowValidationExceptionWhenPersonHeightIsNull() {
+        Exception exception = assertThrows(ValidationException.class, () -> {
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", 1f, null, "10/10/2000", Gender.MALE));
         });
 
@@ -86,9 +88,9 @@ public class DocumentValidatorTests {
     }
 
     @Test
-    public void validatePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsLessThanZero() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            DocumentValidator.validatePerson(
+    public void validatePersonShouldThrowBusinessLogicExceptionWhenPersonHeightIsLessThanZero() {
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", 1f, -1f, "10/10/2000", Gender.MALE));
         });
 
@@ -97,9 +99,9 @@ public class DocumentValidatorTests {
     }
 
     @Test
-    public void validatePersonShouldThrowIllegalArgumentExceptionWhenPersonHeightIsZero() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            DocumentValidator.validatePerson(
+    public void validatePersonShouldThrowBusinessLogicExceptionWhenPersonHeightIsZero() {
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", 1f, 0f, "10/10/2000", Gender.MALE));
         });
 
@@ -110,7 +112,7 @@ public class DocumentValidatorTests {
     @Test
     public void validatePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsNull() {
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            DocumentValidator.validatePerson(
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", 1f, 1f, null, Gender.MALE));
         });
 
@@ -121,7 +123,7 @@ public class DocumentValidatorTests {
     @Test
     public void validatePersonShouldThrowNullOrEmptyExceptionWhenPersonDateOfBirthIsEmpty() {
         Exception exception = assertThrows(NullOrEmptyException.class, () -> {
-            DocumentValidator.validatePerson(
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "", Gender.MALE));
         });
 
@@ -130,9 +132,9 @@ public class DocumentValidatorTests {
     }
 
     @Test
-    public void validatePersonShouldThrowIllegalArgumentExceptionWhenPersonDateOfBirthIsOfWrongFormat() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            DocumentValidator.validatePerson(
+    public void validatePersonShouldThrowBusinessLogicExceptionWhenPersonDateOfBirthIsOfWrongFormat() {
+        Exception exception = assertThrows(BusinessLogicException.class, () -> {
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/30/12", Gender.MALE));
         });
 
@@ -141,9 +143,9 @@ public class DocumentValidatorTests {
     }
 
     @Test
-    public void validatePersonShouldThrowNullPointerExceptionWhenPersonGenderIsNull() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            DocumentValidator.validatePerson(
+    public void validatePersonShouldThrowValidationExceptionWhenPersonGenderIsNull() {
+        Exception exception = assertThrows(ValidationException.class, () -> {
+            PersonValidator.validatePerson(
                 new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000", null));
         });
 
@@ -152,14 +154,14 @@ public class DocumentValidatorTests {
 
     @Test
     public void validatePersonShouldNotThrowAnExceptionWithValidPerson() {
-        assertDoesNotThrow(() -> DocumentValidator.validatePerson(
+        assertDoesNotThrow(() -> PersonValidator.validatePerson(
             new Person(UUID.randomUUID(), "John Smith", 1f, 1f, "10/10/2000", Gender.MALE)));
     }
 
     @Test
-    public void validatePersonIdShouldThrowNullPointerExceptionWhenIdIsNull() {
-        Exception exception = assertThrows(NullPointerException.class, () -> {
-            DocumentValidator.validatePersonId(null);
+    public void validatePersonIdShouldThrowValidationExceptionWhenIdIsNull() {
+        Exception exception = assertThrows(ValidationException.class, () -> {
+            PersonValidator.validatePersonId(null);
         });
 
         assertThat(exception.getMessage()).isEqualTo("Id cannot be null");
@@ -167,6 +169,6 @@ public class DocumentValidatorTests {
 
     @Test
     public void validatePersonIdShouldNotThrowAnExceptionWithValidId() {
-        assertDoesNotThrow(() -> DocumentValidator.validatePersonId(UUID.randomUUID()));
+        assertDoesNotThrow(() -> PersonValidator.validatePersonId(UUID.randomUUID()));
     }
 }

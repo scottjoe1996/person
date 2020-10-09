@@ -1,19 +1,21 @@
 package com.postitapplications.person.utility;
 
+import com.postitapplications.exception.exceptions.BusinessLogicException;
 import com.postitapplications.exception.exceptions.NullOrEmptyException;
+import com.postitapplications.exception.exceptions.ValidationException;
 import com.postitapplications.person.document.Person;
 import com.postitapplications.person.document.Person.Gender;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
-public class DocumentValidator {
+public class PersonValidator {
 
     private final static String DATE_FORMAT = "dd/MM/yyyy";
 
     public static void validatePerson(Person person) {
         if (person == null) {
-            throw new NullPointerException("Person cannot be null");
+            throw new ValidationException("Person cannot be null");
         }
 
         validateName(person.getName());
@@ -31,7 +33,7 @@ public class DocumentValidator {
 
     private static void validateWeight(Float personWeight) {
         if (personWeight == null) {
-            throw new NullPointerException("Person's weight cannot be null");
+            throw new ValidationException("Person's weight cannot be null");
         }
 
         if (personWeight <= 0) {
@@ -42,11 +44,11 @@ public class DocumentValidator {
 
     private static void validateHeight(Float personHeight) {
         if (personHeight == null) {
-            throw new NullPointerException("Person's height cannot be null");
+            throw new ValidationException("Person's height cannot be null");
         }
 
         if (personHeight <= 0) {
-            throw new IllegalArgumentException(
+            throw new BusinessLogicException(
                 "Person's height cannot be less than or equal to zero");
         }
     }
@@ -62,20 +64,19 @@ public class DocumentValidator {
         try {
             simpleDateFormat.parse(dateOfBirth);
         } catch (ParseException exception) {
-            throw new IllegalArgumentException(
-                "Person's date of birth must be in dd/MM/yyyy format");
+            throw new BusinessLogicException("Person's date of birth must be in dd/MM/yyyy format");
         }
     }
 
     private static void validateGender(Gender gender) {
         if (gender == null) {
-            throw new NullPointerException("Person's gender cannot be null");
+            throw new ValidationException("Person's gender cannot be null");
         }
     }
 
     public static void validatePersonId(UUID id) {
         if (id == null) {
-            throw new NullPointerException("Id cannot be null");
+            throw new ValidationException("Id cannot be null");
         }
     }
 }

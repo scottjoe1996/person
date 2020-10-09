@@ -4,7 +4,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.postitapplications.person.document.Person;
 import com.postitapplications.person.repository.PersonRepo;
-import com.postitapplications.person.utility.DocumentValidator;
+import com.postitapplications.person.utility.PersonValidator;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class PersonService {
     }
 
     public Person savePerson(Person person) {
-        DocumentValidator.validatePerson(person);
+        PersonValidator.validatePerson(person);
         return personRepo.save(person);
     }
 
@@ -31,18 +31,18 @@ public class PersonService {
     }
 
     public Person getPersonById(UUID id) {
-        DocumentValidator.validatePersonId(id);
+        PersonValidator.validatePersonId(id);
         return personRepo.findById(id);
     }
 
     public UpdateResult updatePerson(Person person) {
-        DocumentValidator.validatePerson(person);
-        DocumentValidator.validatePersonId(person.getId());
+        PersonValidator.validatePerson(person);
+        PersonValidator.validatePersonId(person.getId());
         return personRepo.update(person);
     }
 
     public DeleteResult deletePersonById(UUID id) {
-        DocumentValidator.validatePersonId(id);
+        PersonValidator.validatePersonId(id);
         return personRepo.removeById(id);
     }
 }
